@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: php-app
-        image: YOUR_ECR_REPO/php-app:latest
+        image: fahimrehman95/php-app:latest
         ports:
         - containerPort: 80
         env:
