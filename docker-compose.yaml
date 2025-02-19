@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  php-app-unifonic:
+    build:
+    #image: fahimrehman95/unifonic-php-app:latest
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-app-unifonic
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: mysql
+      DB_USER: admin
+      DB_PASSWORD: unifonic321
+    depends_on:
+      - mysql-unifonic
+    networks:
+      - app-network
+
+  mysql-unifonic:
+    image: mysql:8.0
+    container_name: mysql-unifonic
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: unifonic_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: unifonic321
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
