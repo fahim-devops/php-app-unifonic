@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Installing dependencies"
+      - apt-get update && apt-get install -y git
+      - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  build:
+    commands:
+      - echo "Building Docker image"
+      - docker build -t $REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - $(aws ecr get-login --no-include-email)
+      - docker push $REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
+  post_build:
+    commands:
+      - echo "Updating Kubernetes manifests"
+      - git clone https://github.com/fahim-devops/php-app-unifonic.git
+      - cd php-app-unifonic
+      - sed -i "s|image:.*|image: $REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION|g" eks-manifest/deployment.yaml
+      - git config --global user.email "fahim.devops@gmail.com"
+      - git config --global user.name "fahim-devops"
+      - git add . && git commit -m "Update image to $CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - git push origin main
