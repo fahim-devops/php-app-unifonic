@@ -35,6 +35,6 @@ This project demonstrates how to deploy PHP application on an Amazon EKS cluster
 
 **Infrastructure:**
  - EKS Cluster: Hosts the PHP application pods.
- - RDS MySQL: Database for the application.
+ - RDS MySQL / Aurora MySQL: Database for the application.
  - Secrets: Store sensitive configurations.
  - Ingress & Service: Expose the application to external traffic.
