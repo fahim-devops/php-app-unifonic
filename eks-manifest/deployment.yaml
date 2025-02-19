@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: php-app
-        image: fahimrehman95/php-app:latest
+        image: fahimrehman95/unifonic-php-app:latest
         ports:
         - containerPort: 80
         env:
